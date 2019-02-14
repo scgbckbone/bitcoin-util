@@ -1,0 +1,54 @@
+#!/bin/bash
+ 
+# Flushing all rules
+ip6tables -F
+ip6tables -X
+ 
+# Setting default filter policy
+ip6tables -P INPUT DROP
+ip6tables -P OUTPUT DROP
+ip6tables -P FORWARD DROP
+
+# gmail
+ip6tables -A OUTPUT -p tcp --dport 465 -j ACCEPT
+
+# DNS
+ip6tables -A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT
+ip6tables -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
+
+# realted, established
+ip6tables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+ 
+# Allow unlimited traffic on loopback
+ip6tables -A INPUT -i lo -j ACCEPT
+ip6tables -A OUTPUT -o lo -j ACCEPT
+
+# allow HTTP out (mostly for apt to be able to fetch updates)
+ip6tables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+# allow HTTPS out (mostly for apt to be able to fetch updates)
+ip6tables -A OUTPUT -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+# log new SSH connections
+ip6tables -A INPUT -p tcp --dport 22 --syn -j LOG --log-prefix "btcdSSH: "
+
+# Allow incoming SSH
+ip6tables -A INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+ 
+# Allow incoming 8333 *bitcoind*
+ip6tables -A INPUT -p tcp --dport 8333 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p tcp --sport 8333 -m state --state ESTABLISHED -j ACCEPT
+ 
+# Allow outgoing 8333 *bitcoind*
+ip6tables -A OUTPUT -p tcp --dport 8333 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 8333 -m state --state ESTABLISHED -j ACCEPT
+
+# Allow incoming 9735 *lightningd*
+ip6tables -A INPUT -p tcp --dport 9735 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p tcp --sport 9735 -m state --state ESTABLISHED -j ACCEPT
+
+# Allow outgoing 9735 *lightningd*
+ip6tables -A OUTPUT -p tcp --dport 9735 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 9735 -m state --state ESTABLISHED -j ACCEPT
