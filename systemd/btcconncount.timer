@@ -1,0 +1,9 @@
+[Unit]
+Description=Hourly check of bitcoind connection count.
+
+[Timer]
+OnCalendar=hourly
+
+[Install]
+WantedBy=multi-user.target
+

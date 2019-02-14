@@ -1,0 +1,21 @@
+[Unit]
+Description=c-Lightning daemon
+Requires=bitcoind.service
+After=bitcoind.service
+
+[Service]
+ExecStart=/home/andrej/lightning/lightningd/lightningd --log-level=debug --pid-file=/home/andrej/.lightning/lightningd.pid --daemon
+ExecStop=/home/andrej/lightning/lightningd/lightningd stop
+User=andrej
+Type=forking
+PIDFile=/home/andrej/.lightning/lightningd.pid
+Restart=always
+RestartSec=15
+PrivateTmp=true
+ProtectSystem=full
+NoNewPrivileges=true
+PrivateDevices=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target

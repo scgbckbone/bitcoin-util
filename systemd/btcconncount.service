@@ -1,0 +1,11 @@
+[Unit]
+Description=Get bitcoind connection count.
+
+[Service]
+ExecStart=/home/andrej/btc_conn_count /home/andrej/btcdcc
+User=andrej
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
+
