@@ -1,0 +1,56 @@
+#!/bin/bash
+
+
+# priviledged operation should be grouped together and switch should be available to not run them 
+# is user has no root privileges
+
+# Private IP address (ipv4 version) (I hidden last digits own IP as XX)
+hostname -I
+
+# Public IP address (ipv4 version) (need connected to the Internet)
+dig +short myip.opendns.com @resolver1.opendns.com
+
+# debian version
+cat /etc/debian_version
+
+cat /etc/issue.net
+
+cat /etc/lsb-release
+
+uname -a 
+
+cat /proc/version
+
+
+for file in /sys/devices/system/cpu/vulnerabilities/*; do
+    echo "$file"
+    echo -e "\t$(cat "$file")"
+
+ip addr
+ip route
+
+
+cat /etc/*-version 
+cat /etc/*-release
+
+
+lscpu
+
+
+hostname
+
+# use sudo demicode -t VAR where VAR is type of entries to display
+# for instance sudo demicode -t system
+# or use sudo demicode -q for less verbose output 
+# or sudo dmidecode -t processor
+# !!! really do one fo those - output is more than lines !!!
+sudo demicode
+
+# desktop envirnonment
+echo "$DESKTOP_SESSION"
+echo "$XDG_CURRENT_DESKTOP"
+
+# screen info 
+# xrandr --verbose
+# xrandr --current for less verbose output 
+xrandr 
