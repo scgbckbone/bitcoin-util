@@ -1,0 +1,21 @@
+#!/bin/bash
+
+dist_upgrade=$1
+autoremove=$2
+shut_down=$3
+
+sudo apt update && sudo apt upgrade -y &&
+
+if [[ "$dist_upgrade" == "y" ]]; then
+	sudo apt dist-upgrade -y
+fi
+
+if [[ "$autoremove" == "y" ]]; then
+	sudo apt autoremove
+fi
+
+if [[ "$shut_down" == "y" ]]; then
+	echo "SHUTDOWN REQUESTED in 5 sec."
+	sleep 5
+	sudo shutdown now
+fi

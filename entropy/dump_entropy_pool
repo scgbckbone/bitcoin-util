@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Carry a random seed from shut-down to start-up
+# Save the whole entropy pool
+
+echo "Saving random seed..."
+random_seed="/var/run/random-seed"
+touch "$random_seed"
+chmod 600 "$random_seed"
+poolfile="/proc/sys/kernel/random/poolsize"
+
+[ -r "$poolfile" ] && bytes="$(cat $poolfile)" || bytes=512
+dd if=/dev/urandom of="$random_seed" count=1 bs="$bytes"

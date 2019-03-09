@@ -1,0 +1,11 @@
+[Unit]
+Description=Carries entropy pool information across shut-downs and start-ups
+
+[Service]
+ExecStart=/usr/local/bin/load_entropy_pool
+ExecStop=/usr/local/bin/dump_entropy_pool
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
