@@ -5,6 +5,7 @@ Description=Get bitcoind connection count.
 ExecStart=/home/andrej/btc_conn_count /home/andrej/btcdcc
 User=andrej
 Type=oneshot
+RemainAfterExit=yes
 
 [Install]
 WantedBy=multi-user.target
