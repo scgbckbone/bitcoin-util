@@ -1,0 +1,11 @@
+[Unit]
+Description=Carries entropy across shut-downs and start-ups
+
+[Service]
+ExecStart=/etc/systemd/system/load_entropy_pool
+ExecStop=/etc/systemd/system/dump_entropy_pool
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
